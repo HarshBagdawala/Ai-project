@@ -49,6 +49,10 @@ body {
   border-radius: 1rem;
   max-width: 80%;
   line-height: 1.4;
+}
+
+/* ✅ Sirf last message animate hoga */
+.message:last-child {
   animation: fadeIn 0.3s ease-in;
 }
 
@@ -61,7 +65,6 @@ body {
 
 .message.bot {
   background: linear-gradient(92deg, #2899b6, #64cde6);
-  /* background: #f5f7fb; */
   color: #fff;
   align-self: flex-start;
   border-bottom-left-radius: 0.3rem;
