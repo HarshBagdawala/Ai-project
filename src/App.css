@@ -51,11 +51,6 @@ body {
   line-height: 1.4;
 }
 
-/* ✅ Sirf last message animate hoga */
-.message:last-child {
-  animation: fadeIn 0.3s ease-in;
-}
-
 .message.user {
   background: linear-gradient(135deg, #6dd5ed, #2193b0);
   color: #fff;
@@ -112,6 +107,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  width: 100%;
 }
 
 .form-label {
@@ -125,6 +121,9 @@ body {
   border-radius: 0.6rem;
   border: 1px solid #ccc;
   font-size: 1rem;
+  background: #efefef;
+  color: #374151;
+  width: 100%;
   transition: border 0.2s;
 }
 
@@ -147,6 +146,11 @@ body {
 
 .form-button:hover {
   transform: scale(1.05);
+}
+.custom-hr {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 @keyframes fadeIn {

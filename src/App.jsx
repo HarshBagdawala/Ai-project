@@ -8,11 +8,20 @@ const App = () => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const [budgetInput, setBudgetInput] = useState("");
+  const [selectedCurrency, setSelectedCurrency] = useState("USD"); // ✅ default
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [selectedTone, setSelectedTone] = useState("");
 
-  const [currencySymbol, setCurrencySymbol] = useState("$");
   const chatBoxRef = useRef(null);
+
+  // ✅ Currency symbols map
+  const currencyMap = {
+    USD: "$",
+    EUR: "€",
+    INR: "₹",
+    GBP: "£",
+    JPY: "¥",
+  };
 
   // API Config
   const apiKey = "AIzaSyDce8sMHTXjy5i4LcnQHVM6pRUdmIt8vJs";
@@ -24,27 +33,15 @@ const App = () => {
     }
   }, [messages, isLoading]);
 
-  useEffect(() => {
-    try {
-      const userLocale = navigator.language;
-      const formattedPrice = new Intl.NumberFormat(userLocale, {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(0);
-
-      setCurrencySymbol(formattedPrice.replace(/0/g, "").trim());
-    } catch {
-      setCurrencySymbol("$");
-    }
-  }, []);
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (!budgetInput || !selectedIndustry || !selectedTone) return;
 
-    const initialPrompt = `My industry is ${selectedIndustry}, my budget is ${budgetInput}, and my desired tone is ${selectedTone}.`;
+    const currencyIcon = currencyMap[selectedCurrency] || selectedCurrency;
+
+    // ✅ Use currency symbol in prompt
+    const initialPrompt = `My industry is ${selectedIndustry}, my budget is ${currencyIcon}${budgetInput}, and my desired tone is ${selectedTone}.`;
+
     setMessages([{ text: initialPrompt, sender: "user" }]);
     setIsFormSubmitted(true);
     sendMessage(initialPrompt);
@@ -137,13 +134,27 @@ const App = () => {
 
               <div className="form-input-group">
                 <label className="form-label">Budget</label>
-                <input
-                  className="form-input"
-                  type="text"
-                  placeholder={`e.g. ${currencySymbol}1000`}
-                  value={budgetInput}
-                  onChange={(e) => setBudgetInput(e.target.value)}
-                />
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <input
+                    className="form-input"
+                    type="text"
+                    placeholder={`e.g. ${currencyMap[selectedCurrency]}1000`}
+                    value={budgetInput}
+                    onChange={(e) => setBudgetInput(e.target.value)}
+                  />
+                  {/* ✅ Currency selector */}
+                  <select
+                    className="form-select"
+                    value={selectedCurrency}
+                    onChange={(e) => setSelectedCurrency(e.target.value)}
+                  >
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="INR">INR (₹)</option>
+                    <option value="GBP">GBP (£)</option>
+                    <option value="JPY">JPY (¥)</option>
+                  </select>
+                </div>
               </div>
 
               <div className="form-input-group">
